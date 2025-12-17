@@ -1,5 +1,28 @@
 ###Promotion
 
+Установка кластера
+# Linux
+    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# macOS
+    brew install minikube
+
+# Windows
+    choco install minikube
+
+Старт
+
+    minikube start --cpus=4 --memory=2048
+
+Статус
+
+    minikube status
+
+Стоп
+
+    minikube delete
+
 Собираем образ
 
     docker build -t my-python-app:latest ./app
@@ -10,6 +33,7 @@
 
 Проверка
 
+    kubectl get nodes
     kubectl get pods
 
 Масштабирование до 100 контейнеров
