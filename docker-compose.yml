@@ -6,5 +6,5 @@ services:
     container_name: page_refresher
     environment:
       TARGET_URL: "https://bezzze.ru"
-      INTERVAL: 20
+      INTERVAL: 60
     restart: unless-stopped

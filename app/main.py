@@ -2,7 +2,7 @@ import time
 import requests
 import os
 
-URL = os.getenv("TARGET_URL", "https://example.com")
+URL = os.getenv("TARGET_URL", "https://bezzze.ru")
 INTERVAL = int(os.getenv("INTERVAL", 60))
 
 session = requests.Session()

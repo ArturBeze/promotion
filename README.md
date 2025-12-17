@@ -6,7 +6,7 @@
 
 Запуск
 
-    kubectl apply -f deployment.yaml
+    kubectl apply -f k8s/deployment.yaml
 
 Проверка
 
@@ -20,3 +20,6 @@
 
     kubectl get pods | wc -l
 
+Остановка
+
+    kubectl scale deployment python-workers --replicas=0
