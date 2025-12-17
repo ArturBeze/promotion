@@ -1,16 +1,18 @@
-# This is a sample Python script.
+import time
+import requests
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+URL = os.getenv("TARGET_URL", "https://example.com")
+INTERVAL = int(os.getenv("INTERVAL", 60))
 
+session = requests.Session()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+while True:
+    try:
+        response = session.get(URL, timeout=10)
+        print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] "
+              f"Status: {response.status_code}")
+    except Exception as e:
+        print(f"Error: {e}")
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    time.sleep(INTERVAL)

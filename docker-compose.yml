@@ -1,0 +1,10 @@
+#version: "3.8"
+
+services:
+  page_refresher:
+    build: ./app
+    container_name: page_refresher
+    environment:
+      TARGET_URL: "https://bezzze.ru"
+      INTERVAL: 20
+    restart: unless-stopped
