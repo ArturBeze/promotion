@@ -25,7 +25,7 @@
 
 Собираем образ
 
-    docker build -t my-python-app:latest ./app
+    docker build -t my-python-app:latest ./main
 
 Запуск
 
