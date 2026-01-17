@@ -120,7 +120,7 @@ with sync_playwright() as p:
         show_click(page, box["width"] / 2 + box["x"], box["height"] / 2 + box["y"])
         page.mouse.click(box["width"] / 2 + box["x"], box["height"] / 2 + box["y"])
 
-        page.keyboard.press('KeyW')
+        page.keyboard.press('KeyA')
 
         time.sleep(.25)
 

@@ -1,35 +1,36 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
-# Установим зависимости для Playwright и Xvfb
+# Устанавливаем системные зависимости Playwright
 RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
-    gnupg \
-    xvfb \
     libnss3 \
-    libatk1.0-0 \
     libatk-bridge2.0-0 \
+    libatk1.0-0 \
     libcups2 \
     libdrm2 \
     libxkbcommon0 \
     libxcomposite1 \
     libxdamage1 \
+    libxfixes3 \
     libxrandr2 \
     libgbm1 \
     libasound2 \
     libpangocairo-1.0-0 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libgtk-3-0 \
     fonts-liberation \
-    libwoff1 \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Установим Python-зависимости
-RUN pip install --no-cache-dir playwright
-
-# Установим движки Playwright
-RUN playwright install
-
 WORKDIR /app
-COPY . /app
 
-# Команда по умолчанию
-CMD ["python", "main.py"]
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN playwright install chromium
+
+COPY main.py .
+#COPY check.py .
+
+CMD ["python", "-u", "main.py"]
+#CMD ["python", "check.py"]

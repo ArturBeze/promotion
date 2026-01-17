@@ -1,13 +1,11 @@
 import os
-import uuid
 import time
 import json
 from playwright.sync_api import sync_playwright
 
 URL = "https://yandex.ru/games/app/288720"
-COOKIES_FILE = "cookies.json"
 SCREEN_DIR = "screenshots"
-ID_FILE = ".container_id"
+COOKIES_FILE = "cookies.json"
 
 def load_cookies(context):
     if os.path.exists(COOKIES_FILE):
@@ -22,22 +20,7 @@ def save_cookies(context):
         json.dump(cookies, f, ensure_ascii=False, indent=2)
     print("🍪 Cookies сохранены")
 
-
-
 def main():
-    print("Start --->")
-    print("New --->")
-
-    if os.path.exists(ID_FILE):
-        with open(ID_FILE) as f:
-            cid = f.read().strip()
-            print(f"🍪 ID загружен {cid}")
-    else:
-        cid = str(uuid.uuid4())
-        print(f"🍪 ID создан {cid}")
-        with open(ID_FILE, "w") as f:
-            f.write(cid)
-
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True,
@@ -68,36 +51,15 @@ def main():
 
         print("Страница загружена")
 
-        page.wait_for_timeout(5000)
-
-        if not os.path.exists(COOKIES_FILE):
-            play_button = page.locator('button[data-guard-accept="play_button"]')
-            play_button.click()
-
-        time.sleep(3)
-
         save_cookies(context)
-
-        time.sleep(3)
-
-        fullscreen_btn = page.locator('[data-testid="yandex-fullscreen-render-button"]')
-        fullscreen_btn.wait_for(state="visible")
-        fullscreen_btn.click()
-
-        time.sleep(3)
-
-        # container_id = os.getenv("HOSTNAME", "unknown_container")
-        container_id = cid
 
         i = 0
         while True:
-            page.keyboard.press('KeyA')
-
-            filename = f"{SCREEN_DIR}/{container_id}/screenshot_{i}.png"
+            filename = f"{SCREEN_DIR}/screenshot_{i}.png"
             page.screenshot(path=filename)
             print(f"Скриншот сохранён: {filename}")
             i += 1
-            time.sleep(2.2)
+            time.sleep(2)
 
 if __name__ == "__main__":
     main()

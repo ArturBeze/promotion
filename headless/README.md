@@ -1,2 +1,2 @@
 docker build -t playwright-xvfb .
-docker run -it --rm playwright-xvfb
+docker run -d -it --rm playwright-xvfb
