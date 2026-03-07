@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27c99609-0b1a-4c62-bd6e-72a67efb810d" name="Changes" comment="Update">
+      <change beforePath="$PROJECT_DIR$/.idea/PythonProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PythonProject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/headless/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/headless/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/headless/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/headless/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,12 +33,12 @@
     &quot;assignee&quot;: &quot;ArturBeze&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ArturBeze/promotion.git&quot;,
-    &quot;accountId&quot;: &quot;448c6079-3c7f-4949-9b74-a5255de08f29&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ArturBeze/promotion.git",
+    "accountId": "de2ee50a-161d-4911-928e-ce4de05d223a"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -65,7 +67,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-af26db0dccfe-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.26775.22" />
+        <option value="bundled-python-sdk-1f77c24022e5-d902c0275401-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-252.26830.99" />
       </set>
     </attachedChunks>
   </component>

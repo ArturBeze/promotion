@@ -3,10 +3,10 @@
 services:
   playwright_bot:
     build: .
-    image: playwright-bot:latest
+    image: art-playwright-bot:latest
 #    container_name: bot_1
     deploy:
-      replicas: 5
+      replicas: 6
       restart_policy:
         condition: any
     volumes:

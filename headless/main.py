@@ -5,7 +5,10 @@ import json
 from playwright.sync_api import sync_playwright
 
 # URL = "https://yandex.ru/games/app/288720"
-URL = "https://yandex.ru/games/app/240023?lang=ru"
+# URL = "https://yandex.ru/games/app/240023?lang=ru"
+# URL = "https://yandex.ru/games/app/274358?lang=ru"
+URL = "https://yandex.ru/games/app/503306?lang=ru"
+
 COOKIES_FILE = "cookies.json"
 SCREEN_DIR = "screenshots"
 ID_FILE = ".container_id"
@@ -41,8 +44,8 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            # headless=True,
-            headless=False,
+            # headless=True, # для докера
+            headless=False, # для браузера
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--disable-dev-shm-usage",
@@ -80,11 +83,18 @@ def main():
 
         save_cookies(context)
 
-        time.sleep(3)
+        time.sleep(6)
 
+        # start ad
         fullscreen_btn = page.locator('[data-testid="yandex-fullscreen-render-button"]')
-        fullscreen_btn.wait_for(state="visible")
-        fullscreen_btn.click()
+        # fullscreen_btn.wait_for(state="visible")
+        # fullscreen_btn.click()
+
+        if fullscreen_btn.is_visible():
+            fullscreen_btn.first.click()
+            print("Кнопка фуллскрина нажата")
+        else:
+            print("Кнопки нет, идём дальше")
 
         time.sleep(3)
 
@@ -100,8 +110,6 @@ def main():
             print(f"Скриншот сохранён: {filename}")
             i += 1
             time.sleep(2.2)
-
-
 
             fullscreen_btn = page.locator('[data-testid="yandex-fullscreen-render-button"]')
 
