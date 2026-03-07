@@ -13,6 +13,59 @@ COOKIES_FILE = "cookies.json"
 SCREEN_DIR = "screenshots"
 ID_FILE = ".container_id"
 
+def show_click(page, x, y, color="red"):
+    page.evaluate(
+        """({x, y, color}) => {
+            const dot = document.createElement('div');
+            dot.style.position = 'fixed';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.background = color;
+            dot.style.borderRadius = '50%';
+            dot.style.zIndex = 999999;
+            dot.style.pointerEvents = 'none';
+            dot.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(dot);
+
+            setTimeout(() => dot.remove(), 1000);
+        }""",
+        {"x": x, "y": y, "color": color},
+    )
+
+def handler():
+    page.evaluate("""
+    () => {
+        if (document.getElementById('resume-btn')) return;
+
+        const btn = document.createElement('button');
+        btn.id = 'resume-btn';
+        btn.innerText = '▶ Продолжить (U)';
+        btn.style = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 99999;
+            padding: 10px;
+            font-size: 16px;
+        `;
+        document.body.appendChild(btn);
+
+        window.__resumeAutomation = false;
+
+        btn.onclick = () => {
+            window.__resumeAutomation = true;
+        };
+
+        document.addEventListener('keydown', e => {
+            if (e.key.toLowerCase() === 'u') {
+                window.__resumeAutomation = true;
+            }
+        });
+    }
+    """)
+
 def load_cookies(context):
     if os.path.exists(COOKIES_FILE):
         with open(COOKIES_FILE, "r", encoding="utf-8") as f:
@@ -100,6 +153,18 @@ def main():
 
         # container_id = os.getenv("HOSTNAME", "unknown_container")
         container_id = cid
+
+############################################################################
+        frame = page.frame_locator('#game-frame')
+        canvas = frame.locator("canvas")
+        box = canvas.bounding_box()
+        print(box)
+
+        show_click(page, box["width"] / 2 + box["x"], box["height"] / 2 + box["y"])
+        page.mouse.click(box["width"] / 2 + box["x"], box["height"] / 2 + box["y"])
+
+        time.sleep(3)
+############################################################################
 
         i = 0
         while True:
