@@ -33,4 +33,4 @@ COPY main.py .
 #COPY check.py .
 
 CMD ["python", "-u", "main.py"]
-#CMD ["python", "check.py"]
+# CMD ["python", "check.py"]

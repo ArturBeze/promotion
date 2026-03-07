@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  scraper:
+    build: .
+    restart: unless-stopped
+    environment:
+      PYTHONUNBUFFERED: "1"
+    command: >
+      sh -c "xvfb-run -a python -u app.py"

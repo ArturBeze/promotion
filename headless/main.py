@@ -3,11 +3,12 @@ import uuid
 import time
 import json
 from playwright.sync_api import sync_playwright
+import random
 
 # URL = "https://yandex.ru/games/app/288720"
 # URL = "https://yandex.ru/games/app/240023?lang=ru"
-# URL = "https://yandex.ru/games/app/274358?lang=ru"
-URL = "https://yandex.ru/games/app/503306?lang=ru"
+URL = "https://yandex.ru/games/app/274358?lang=ru"
+# URL = "https://yandex.ru/games/app/503306?lang=ru"
 
 COOKIES_FILE = "cookies.json"
 SCREEN_DIR = "screenshots"
@@ -33,38 +34,6 @@ def show_click(page, x, y, color="red"):
         }""",
         {"x": x, "y": y, "color": color},
     )
-
-def handler():
-    page.evaluate("""
-    () => {
-        if (document.getElementById('resume-btn')) return;
-
-        const btn = document.createElement('button');
-        btn.id = 'resume-btn';
-        btn.innerText = '▶ Продолжить (U)';
-        btn.style = `
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 99999;
-            padding: 10px;
-            font-size: 16px;
-        `;
-        document.body.appendChild(btn);
-
-        window.__resumeAutomation = false;
-
-        btn.onclick = () => {
-            window.__resumeAutomation = true;
-        };
-
-        document.addEventListener('keydown', e => {
-            if (e.key.toLowerCase() === 'u') {
-                window.__resumeAutomation = true;
-            }
-        });
-    }
-    """)
 
 def load_cookies(context):
     if os.path.exists(COOKIES_FILE):
@@ -97,8 +66,8 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            # headless=True, # для докера
-            headless=False, # для браузера
+            headless=True, # для докера
+            # headless=False, # для браузера
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--disable-dev-shm-usage",
@@ -130,7 +99,8 @@ def main():
 
         if not os.path.exists(COOKIES_FILE):
             play_button = page.locator('button[data-guard-accept="play_button"]')
-            play_button.click()
+            if play_button.count() > 0:
+                play_button.click(timeout=5000)
 
         time.sleep(3)
 
@@ -138,7 +108,6 @@ def main():
 
         time.sleep(6)
 
-        # start ad
         fullscreen_btn = page.locator('[data-testid="yandex-fullscreen-render-button"]')
         # fullscreen_btn.wait_for(state="visible")
         # fullscreen_btn.click()
@@ -153,8 +122,10 @@ def main():
 
         # container_id = os.getenv("HOSTNAME", "unknown_container")
         container_id = cid
+        filename = f"{SCREEN_DIR}/{container_id}/screenshot_start.png"
+        page.screenshot(path=filename)
 
-############################################################################
+        ############################################################################
         frame = page.frame_locator('#game-frame')
         canvas = frame.locator("canvas")
         box = canvas.bounding_box()
@@ -164,7 +135,29 @@ def main():
         page.mouse.click(box["width"] / 2 + box["x"], box["height"] / 2 + box["y"])
 
         time.sleep(3)
-############################################################################
+        ############################################################################
+
+        fullscreen_btn = page.locator('[data-testid="yandex-fullscreen-render-button"]')
+
+        if fullscreen_btn.is_visible():
+            fullscreen_btn.first.click()
+            print("Кнопка фуллскрина нажата")
+        else:
+            print("Кнопки нет, идём дальше")
+
+        time.sleep(6)
+
+        ############################################################################
+        frame = page.frame_locator('#game-frame')
+        canvas = frame.locator("canvas")
+        box = canvas.bounding_box()
+        print(box)
+
+        show_click(page, box["width"] / 2 + box["x"] + 200, box["height"] / 2 + box["y"] + 160)
+        page.mouse.click(box["width"] / 2 + box["x"] + 200, box["height"] / 2 + box["y"] + 160)
+
+        time.sleep(3)
+        ############################################################################
 
         i = 0
         while True:
@@ -174,7 +167,7 @@ def main():
             page.screenshot(path=filename)
             print(f"Скриншот сохранён: {filename}")
             i += 1
-            time.sleep(2.2)
+            time.sleep(12.2)
 
             fullscreen_btn = page.locator('[data-testid="yandex-fullscreen-render-button"]')
 
@@ -185,6 +178,12 @@ def main():
                 print("Кнопка фуллскрина нажата")
             else:
                 print("Кнопки нет, идём дальше")
+
+                dx = random.uniform(-100, 100)
+                dy = random.uniform(-100, 100)
+
+                show_click(page, box["width"] / 2 + box["x"] + dx, box["height"] / 2 + box["y"] + dy)
+                page.mouse.click(box["width"] / 2 + box["x"] + dx, box["height"] / 2 + box["y"] + dy)
 
 if __name__ == "__main__":
     main()
