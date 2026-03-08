@@ -13,7 +13,8 @@ def log(message: str) -> None:
 
 
 def main() -> int:
-    url = "https://example.com"
+    # url = "https://example.com"
+    url = "https://yandex.ru/games/app/503306?lang=ru"
 
     log("Container started")
     log(f"Python executable: {sys.executable}")
@@ -24,16 +25,31 @@ def main() -> int:
         with sync_playwright() as p:
             log("Launching Chromium...")
             browser = p.chromium.launch(
-                headless=True,
+                channel="chrome",
+                headless=False,
                 args=[
-                    "--no-sandbox",
+                    "--disable-blink-features=AutomationControlled",
                     "--disable-dev-shm-usage",
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox"
                 ],
             )
+            # page = browser.new_page()
 
-            page = browser.new_page()
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                           "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                viewport={"width": 1280, "height": 720},
+                locale="ru-RU"
+            )
+            page = context.new_page()
+
             log("Opening page...")
             page.goto(url, wait_until="domcontentloaded", timeout=30000)
+
+            log("Take a shot...")
+            filename = f"screenshots/test_screenshot.png"
+            page.screenshot(path=filename)
 
             title = page.title()
             log(f"Page title: {title}")
