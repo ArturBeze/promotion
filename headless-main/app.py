@@ -103,6 +103,9 @@ def main() -> int:
 
             print("Страница загружена")
 
+            title = page.title()
+            log(f"Page title: {title}")
+
             page.wait_for_timeout(5000)
 
             if not os.path.exists(COOKIES_FILE):
