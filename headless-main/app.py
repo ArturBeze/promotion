@@ -11,7 +11,8 @@ from playwright.sync_api import sync_playwright
 # URL = "https://yandex.ru/games/app/288720"
 # URL = "https://yandex.ru/games/app/240023?lang=ru"
 # URL = "https://yandex.ru/games/app/274358?lang=ru"
-URL = "https://yandex.ru/games/app/503306?lang=ru"
+# URL = "https://yandex.ru/games/app/503306?lang=ru"
+URL = "https://yandex.ru/games/app/240023?lang=ru"
 
 COOKIES_FILE = "cookies.json"
 SCREEN_DIR = "screenshots"

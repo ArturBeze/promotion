@@ -4,7 +4,10 @@ services:
   scraper:
     build: .
     image: art-main:latest
-    restart: unless-stopped
+    profiles:
+      - manual
+#    restart: unless-stopped
+    restart: "no"
     deploy:
       replicas: 3
       restart_policy:
